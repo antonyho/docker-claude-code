@@ -1,0 +1,4 @@
+# Claude Code profile directory
+# Contains authentication tokens, session history, and user preferences
+# This directory is mounted to /home/node inside the Docker container
+.claude-profile/
