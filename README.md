@@ -1,30 +1,21 @@
-# Claude Code in Docker container
+# Claude Code in Docker Container
 
-## Build the iamge and push to Docker repository
-(You don't have to do this if you feel safe to use my image on Docker Hub)
+A Docker containerization of the Claude Code CLI tool for easy deployment and consistent environment setup.
 
-Building image and push to private Docker Hub account.
-```
-docker build -t antonyho/claude-code .
-docker push antonyho/claude-code
-```
+## Prerequisites
 
+- Docker installed and running
+- Claude account or API key for authentication
 
-## Sign in with Claude Account or API key
-On first launch, Claude Code will ask for your theme preference and to sign into the Claude account or to use API key.
-It will then create a `CLAUDE.md` file into your current directory. 
+## Quick Start
 
-You should check the user of your Docker service. When you have user namespace enabled on your Docker configuration, the user inside the container might not be able to write file to the mounted volume. Using `--userns=host` to disable user namespace for this container, along with `-u $(id -u):$(id -g)` could possibly solve the permission problem.
+### Using the Pre-built Image
 
-This is a very specific directory needed to start using Claude Code. Because it will create files to home directory to store account information and session history. Since we are using Claude Code within Docker container, we need to create a dedicated directory within the project workspace and mount it to home directory of the Docker user inside container. After the first launch, the session and access token will be stored in this directory.
-
-Here we create a directory call `.claude-profile` in current project workspace and mount it later. Consider to add this directory to `.gitignore`.
-```
+```bash
+# Create profile directory for persistent storage
 mkdir .claude-profile
-```
 
-Start the container.
-```
+# Run Claude Code in Docker
 docker run -it --rm \
     --name claude-code \
     --userns=host \
@@ -34,3 +25,38 @@ docker run -it --rm \
     -w /workspace \
     antonyho/claude-code
 ```
+
+### Building Your Own Image
+
+If you prefer to build the image yourself: (replace my namespace "antonyho" with yours)
+
+```bash
+# Build the image
+docker build -t antonyho/claude-code .
+
+# (Optional) Push to Docker Hub
+docker push antonyho/claude-code
+```
+
+## How It Works
+
+### First Launch Setup
+On first launch, Claude Code will:
+1. Ask for your theme preference
+2. Prompt you to sign in with your Claude account or API key
+3. Create a `CLAUDE.md` file in your current directory
+4. Store authentication and session data in the `.claude-profile` directory
+
+### Directory Structure
+- `.claude-profile/` - Contains authentication tokens, session history, and user preferences (mounted to `/home/node` in container)
+- Current directory - Mounted to `/workspace` for code access
+
+*Consider to add `.claude-profile` directory to your project's `.gitignore` to keey your own Claude session in private.*
+
+### Permission Handling
+The Docker run command includes specific flags to handle file permissions:
+- `--userns=host` - Disables user namespace isolation
+- `-u $(id -u):$(id -g)` - Runs container with your host user/group IDs
+
+This prevents permission issues when Claude Code creates files in mounted volumes.
+**You are very likely that you don't need them if you have not configured user namespace on your Docker service.**
