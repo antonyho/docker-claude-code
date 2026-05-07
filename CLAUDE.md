@@ -14,23 +14,14 @@ docker build -t antonyho/claude-code .
 
 ### Running the Container
 ```bash
-# Create profile directory first
-mkdir .claude-profile
-
 # Run the container with proper permissions
 docker run -it --rm \
     --name claude-code \
     --userns=host \
     -u $(id -u):$(id -g) \
-    -v $(pwd)/.claude-profile:/home/node \
     -v $(pwd):/workspace \
     -w /workspace \
-    antonyho/claude-code
-```
-
-### Publishing to Docker Hub
-```bash
-docker push antonyho/claude-code
+    ghcr.io/antonyho/docker-claude-code
 ```
 
 ## Architecture Notes
@@ -42,7 +33,7 @@ docker push antonyho/claude-code
 - Designed to mount host directories for persistent storage
 
 ### Volume Mounts
-- `.claude-profile` directory is mounted to `/home/node` for Claude Code configuration persistence
+- `.claude-cfg` directory is mounted to `/workspace` for Claude Code configuration persistence
 - Current working directory is mounted to `/workspace` for code access
 - Container runs with host user permissions to avoid file ownership issues
 
