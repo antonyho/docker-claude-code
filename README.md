@@ -12,18 +12,14 @@ A Docker containerization of the Claude Code CLI tool for easy deployment and co
 ### Using the Pre-built Image
 
 ```bash
-# Create profile directory for persistent storage
-mkdir .claude-profile
-
 # Run Claude Code in Docker
 docker run -it --rm \
     --name claude-code \
     --userns=host \
     -u $(id -u):$(id -g) \
-    -v $(pwd)/.claude-profile:/home/node \
     -v $(pwd):/workspace \
     -w /workspace \
-    antonyho/claude-code
+    ghcr.io/antonyho/docker-claude-code
 ```
 
 ### Building Your Own Image
@@ -32,10 +28,7 @@ If you prefer to build the image yourself: (replace my namespace "antonyho" with
 
 ```bash
 # Build the image
-docker build -t antonyho/claude-code .
-
-# (Optional) Push to Docker Hub
-docker push antonyho/claude-code
+docker build -t antonyho/docker-claude-code .
 ```
 
 ## How It Works
@@ -45,13 +38,12 @@ On first launch, Claude Code will:
 1. Ask for your theme preference
 2. Prompt you to sign in with your Claude account or API key
 3. Create a `CLAUDE.md` file in your current directory
-4. Store authentication and session data in the `.claude-profile` directory
 
 ### Directory Structure
-- `.claude-profile/` - Contains authentication tokens, session history, and user preferences (mounted to `/home/node` in container)
 - Current directory - Mounted to `/workspace` for code access
+- `.claude-cfg` directory will be initialised by Claude Code on first launch
 
-*Consider to add `.claude-profile` directory to your project's `.gitignore` to keey your own Claude session in private.*
+*Consider to add `.claude-cfg` directory to your project's `.gitignore` to keep your own Claude session in private.*
 
 ### Permission Handling
 The Docker run command includes specific flags to handle file permissions:
