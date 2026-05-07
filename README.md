@@ -43,7 +43,7 @@ On first launch, Claude Code will:
 - Current directory - Mounted to `/workspace` for code access
 - `.claude-cfg` directory will be initialised by Claude Code on first launch
 
-*Consider to add `.claude-cfg` directory to your project's `.gitignore` to keep your own Claude session in private.*
+*Consider adding the `.claude-cfg` directory to your project's `.gitignore` to keep your Claude session private.*
 
 ### Permission Handling
 The Docker run command includes specific flags to handle file permissions:
