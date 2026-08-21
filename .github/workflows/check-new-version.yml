@@ -27,7 +27,7 @@ jobs:
       - name: Check if this version was already released
         id: check
         run: |
-          if git rev-parse "${{ steps.npm.outputs.version }}" >/dev/null 2>&1; then
+          if git rev-parse "v${{ steps.npm.outputs.version }}" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -38,7 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ steps.npm.outputs.version }}" \
-            --title "${{ steps.npm.outputs.version }}" \
+          gh release create "v${{ steps.npm.outputs.version }}" \
+            --title "v${{ steps.npm.outputs.version }}" \
             --notes "Claude Code version {{ steps.npm.outputs.version }}
             Automated release tracking @anthropic-ai/claude-code@${{ steps.npm.outputs.version }} on npm."
