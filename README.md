@@ -22,13 +22,27 @@ docker run -it --rm \
     ghcr.io/antonyho/docker-claude-code
 ```
 
+### Image Tags
+
+| Base image | Tags |
+|---|---|
+| `node:current-slim` (default) | `latest`, `node`, `<version>`, `<version>-node` (e.g. `2.1.0`, `2.1`, `2`, `2.1.0-node`, `2.1-node`, `2-node`) |
+| `ubuntu:26.04` | `ubuntu`, `<version>-ubuntu` (e.g. `2.1.0-ubuntu`, `2.1-ubuntu`, `2-ubuntu`) |
+
+```bash
+docker pull ghcr.io/antonyho/docker-claude-code:ubuntu
+```
+
 ### Building Your Own Image
 
 If you prefer to build the image yourself: (replace my namespace "antonyho" with yours)
 
 ```bash
-# Build the image
+# Build the default (node) image
 docker build -t antonyho/docker-claude-code .
+
+# Build the Ubuntu 26.04 based image
+docker build -f Dockerfile.ubuntu -t antonyho/docker-claude-code:ubuntu .
 ```
 
 ## How It Works

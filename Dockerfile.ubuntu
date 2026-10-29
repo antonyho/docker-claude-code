@@ -1,0 +1,14 @@
+FROM ubuntu:26.04
+
+ARG CLAUDE_CODE_VERSION=latest
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates nodejs npm \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV WORKSPACE="/workspace"
+ENV CLAUDE_CONFIG_DIR=$WORKSPACE/.claude-cfg
+WORKDIR $WORKSPACE
+RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION#v}
+
+CMD ["claude"]
