@@ -1,7 +1,5 @@
 FROM node:current-slim
 
-ARG CLAUDE_CODE_VERSION=latest
-
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -17,6 +15,7 @@ RUN apt-get update \
 ENV WORKSPACE="/workspace"
 ENV CLAUDE_CONFIG_DIR=$WORKSPACE/.claude-cfg
 WORKDIR $WORKSPACE
+ARG CLAUDE_CODE_VERSION=latest
 RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION#v} \
     && npm cache clean --force
 
