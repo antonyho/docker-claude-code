@@ -17,6 +17,7 @@ RUN apt-get update \
 ENV WORKSPACE="/workspace"
 ENV CLAUDE_CONFIG_DIR=$WORKSPACE/.claude-cfg
 WORKDIR $WORKSPACE
-RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION#v}
+RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION#v} \
+    && npm cache clean --force
 
 CMD ["claude"]
