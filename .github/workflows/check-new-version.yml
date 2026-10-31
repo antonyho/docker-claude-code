@@ -2,8 +2,8 @@ name: Check for new Claude Code version
 
 on:
   schedule:
-    # Daily
-    - cron: '0 0 * * *'
+    # Multiple builds per day
+    - cron: '10 1,4,7,10 * * *'
   workflow_dispatch: {}
 
 permissions:
